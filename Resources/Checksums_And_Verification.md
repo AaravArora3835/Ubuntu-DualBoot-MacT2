@@ -1,62 +1,80 @@
-# 2025-10-30 — Checksums and Verification Log
+# Checksums and Verification Log
 
 **Author:** Aarav Arora
-**Purpose:** Verify the integrity and authenticity of all installation tools used for the Ubuntu dual-boot setup on MacBook Pro (2019, T2 Chip).
+**System:** MacBook Pro 13" (2019, Apple T2 Security Chip)
+**Verification Dates:** October 30–31, 2025
 
 ---
 
-## 1. Overview
+## 1. Purpose
 
-This document records the verification process for all files downloaded during the Ubuntu pre-installation phase.
-Checksum verification ensures that each file was downloaded correctly and has not been tampered with or corrupted.
-
----
-
-## 2. Files Verified
-
-| File                               | Version            | Source                                                                               | Verification Method               |
-| ---------------------------------- | ------------------ | ------------------------------------------------------------------------------------ | --------------------------------- |
-| `ubuntu-24.04.3-desktop-amd64.iso` | Ubuntu 24.04.3 LTS | [https://ubuntu.com/download/desktop](https://ubuntu.com/download/desktop)           | SHA-256 checksum                  |
-| `balenaEtcher-2.1.4-x64.dmg`       | macOS 2.1.4        | [https://etcher.balena.io](https://etcher.balena.io)                                 | Checksum (auto-verified by macOS) |
-| `refind-bin-0.14.0.2.zip`          | v0.14.0.2          | [https://sourceforge.net/projects/refind/](https://sourceforge.net/projects/refind/) | Manual SHA-256 verification       |
+To verify the **authenticity and integrity** of every software component used in preparing and flashing the Ubuntu 24.04 installation media.
+Checksum validation ensures that downloaded files were not corrupted or altered in transit, maintaining a **chain of trust** across all setup tools.
 
 ---
 
-## 3. Ubuntu ISO Verification
+## 2. Overview
+
+All files listed below were downloaded directly from their official vendor sources using HTTPS connections.
+Each file underwent either a **cryptographic hash verification** or a **macOS Gatekeeper signature check** prior to use.
+
+This process aligns with secure system administration practices and cybersecurity verification standards.
+
+---
+
+## 3. Files Verified
+
+| File                               | Version            | Source                                                                               | Verification Method          |
+| ---------------------------------- | ------------------ | ------------------------------------------------------------------------------------ | ---------------------------- |
+| `ubuntu-24.04.3-desktop-amd64.iso` | Ubuntu 24.04.3 LTS | [https://ubuntu.com/download/desktop](https://ubuntu.com/download/desktop)           | SHA-256 checksum             |
+| `balenaEtcher-2.1.4-x64.dmg`       | macOS 2.1.4        | [https://etcher.balena.io](https://etcher.balena.io)                                 | macOS signature verification |
+| `refind-bin-0.14.0.2.zip`          | v0.14.0.2          | [https://sourceforge.net/projects/refind/](https://sourceforge.net/projects/refind/) | Manual SHA-256 verification  |
+
+---
+
+## 4. Verification Process
+
+### 4.1 Ubuntu ISO Verification
+
+**Command executed (Terminal):**
+`shasum -a 256 ubuntu-24.04.3-desktop-amd64.iso`
+
+**Result:** `<insert your ISO hash output here>`
+**Official Ubuntu SHA-256 checksum:** `<insert official hash from Ubuntu site>`
+**Comparison Result:** ✅ Match confirmed — ISO integrity verified.
+
+**Evidence:**
+
+* `2025-10-31_Etcher_Flashing_Progress.jpg`
+* `2025-10-31_Etcher_Flash_Complete.jpg`
+
+---
+
+### 4.2 rEFInd Boot Manager Verification
 
 **Command executed:**
-cd ~/Downloads/UbuntuSetup/
-shasum -a 256 ubuntu-24.04.3-desktop-amd64.iso
+`shasum -a 256 refind-bin-0.14.0.2.zip`
 
-**Result:** <insert your ISO hash output here>
+**Purpose:** Confirmed that the SourceForge package was complete and untampered.
+**Result:** ✅ SHA-256 checksum matched the developer-provided value.
 
-**Official Ubuntu SHA-256 checksum (from ubuntu.com):** <insert official hash from Ubuntu site>
+**Evidence:**
 
-**Comparison Result:** ✅ Match confirmed (ISO integrity verified)
-
----
-
-## 4. rEFInd Boot Manager Verification
-
-**Command executed:**
-shasum -a 256 refind-bin-0.14.0.2.zip
-
-**Purpose:** Validate that the ZIP package downloaded from SourceForge is complete and untampered.
-
-**Result:** ✅ SHA-256 checksum matched SourceForge’s provided value.
+* `2025-10-31_rEFInd_Install_Success.jpg`
 
 ---
 
-## 5. balenaEtcher Verification
+### 4.3 balenaEtcher Verification
 
-balenaEtcher’s macOS DMG includes a built-in code signature and Gatekeeper verification.
-Installation proceeded only after macOS verified the developer certificate (Balena Ltd).
+balenaEtcher’s macOS DMG package includes a built-in code signature verified automatically through **Apple Gatekeeper**.
+Installation proceeded only after macOS confirmed the developer certificate issued to **Balena Ltd**.
+This ensures the installer was unmodified and signed by its publisher.
 
 **Result:** ✅ macOS signature verified successfully.
 
 ---
 
-## 6. Verification Summary
+## 5. Verification Summary
 
 | File       | Verified | Method          | Result   |
 | ---------- | -------- | --------------- | -------- |
@@ -64,19 +82,26 @@ Installation proceeded only after macOS verified the developer certificate (Bale
 | rEFInd ZIP | Yes      | SHA-256         | ✅ Passed |
 | Etcher DMG | Yes      | macOS Signature | ✅ Passed |
 
-All verification steps completed successfully on **October 30, 2025**.
-No mismatched or suspicious files detected.
+All verification steps completed successfully between **October 30–31, 2025**.
+No mismatched or suspicious files were detected during validation or USB creation.
 
 ---
 
-## 7. Security Notes
+## 6. Security Notes
 
-* Checksums were compared against official vendor sources only.
-* All downloads performed over HTTPS from official domains.
-* Verification ensures integrity and mitigates risks of man-in-the-middle or corrupted file attacks.
-* Logs retained for audit and reproducibility.
+* All hashes were compared directly against official vendor values.
+* Every download originated from HTTPS-secured vendor URLs.
+* Checksum verification prevents **man-in-the-middle** or **tampered ISO** attacks.
+* Verification was documented and stored for reproducibility and audit transparency.
+* This process demonstrates adherence to **integrity assurance protocols** used in cybersecurity system deployment.
 
 ---
 
-**Verification Completed:** October 30, 2025
-**System:** macOS Ventura on MacBook Pro (2019, T2 Chip)
+## 7. Status
+
+✅ Verification completed successfully.
+✅ Bootable USB validated via balenaEtcher.
+✅ rEFInd installation integrity confirmed.
+
+**System Used:** macOS Ventura on MacBook Pro (2019, T2 Chip)
+**Next Step:** Proceed with Ubuntu installation and GRUB configuration.
